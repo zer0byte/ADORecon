@@ -102,6 +102,19 @@ Findings are de-duplicated globally, with per-source de-dup for marker rules lik
 
 `sprecon.js` is the SharePoint Online and M365 sibling, same architecture and same read-only guarantees. It is search-driven: it uses the SharePoint Search API (scoped to what the account can see) to inventory sites, surface externally and anonymously shared content, flag broad-access grants and guest accounts, and sweep document content for secrets.
 
+## Detection and response
+
+Every posture finding ADORecon surfaces has a matching audit signature that a blue team can alert on. The tool only enumerates these; it never performs them.
+
+| Finding | Detection signature (Azure DevOps audit / activity logs) |
+| --- | --- |
+| Reachable cloud connection | Service connection created or authorized; pipeline run that consumes it |
+| Pipeline decorator installed | Extension install; contribution type `ms.azure-pipelines.pipeline-decorator` |
+| Self-hosted agent pool | Agent pool or agent registration; off-hours job queue |
+| Plaintext credential in Library variable | Variable group read; variable not flagged secret |
+| Repo write reachable | Push events; branch policy or reviewer bypass |
+| PAT minting (not performed by this tool) | Token creation events for the identity |
+
 ## Authorized use
 
 This tool is for authorized security assessments only. Run it only against Azure DevOps organizations you own or are contracted to test. You are responsible for having permission. The authors accept no liability for misuse.
