@@ -1,0 +1,129 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ADORecon — contoso-eng (sample)</title>
+<style>
+  :root{ --bd:#e2e8f0; --mut:#64748b; --ink:#0f172a; }
+  *{ box-sizing:border-box; } body{ font:14px/1.55 system-ui,-apple-system,sans-serif; color:var(--ink); margin:0; background:#f8fafc; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:28px 22px 80px; }
+  header{ border-bottom:2px solid var(--ink); padding-bottom:14px; margin-bottom:8px; }
+  h1{ margin:0; font-size:22px; } header .meta{ color:var(--mut); font-size:12.5px; margin-top:4px; }
+  .ro{ display:inline-block; font-size:11px; color:#166534; background:#dcfce7; border:1px solid #bbf7d0; padding:1px 7px; border-radius:10px; margin-left:8px; vertical-align:middle; }
+  .summary{ display:flex; flex-wrap:wrap; gap:10px; margin:16px 0; }
+  .stat{ flex:1; min-width:120px; background:#fff; border:1px solid var(--bd); border-radius:8px; padding:10px 12px; }
+  .stat b{ display:block; font-size:20px; } .stat small{ color:var(--mut); text-transform:uppercase; font-size:10.5px; letter-spacing:.5px; }
+  nav{ background:#fff; border:1px solid var(--bd); border-radius:8px; padding:10px 14px; margin-bottom:22px; font-size:13px; }
+  nav a{ color:#1d4ed8; text-decoration:none; margin-right:14px; white-space:nowrap; } nav a:hover{ text-decoration:underline; }
+  section{ background:#fff; border:1px solid var(--bd); border-radius:8px; padding:16px 18px; margin-bottom:18px; }
+  h2{ margin:0 0 10px; font-size:16px; border-bottom:1px solid var(--bd); padding-bottom:8px; }
+  h2 .c{ color:var(--mut); font-weight:400; font-size:13px; }
+  .scroll{ overflow-x:auto; } table{ border-collapse:collapse; width:100%; font-size:12.5px; }
+  th,td{ border-bottom:1px solid var(--bd); padding:7px 9px; text-align:left; vertical-align:top; word-break:break-word; }
+  th{ background:#f1f5f9; white-space:nowrap; } code{ font:12px ui-monospace,monospace; word-break:break-all; }
+  td a,.kv a{ color:#1d4ed8; text-decoration:none; } td a:hover{ text-decoration:underline; }
+  tr.critical td:first-child,tr.high td:first-child,tr.medium td:first-child,tr.low td:first-child,tr.info td:first-child{ font-weight:700; text-transform:uppercase; font-size:11px; }
+  tr.critical td:first-child{ color:#fff; background:#b91c1c; } tr.high td:first-child{ color:#fff; background:#ea580c; }
+  tr.medium td:first-child{ background:#fde68a; } tr.low td:first-child{ background:#e2e8f0; } tr.info td:first-child{ background:#dbeafe; }
+  .kv{ padding:3px 0; } .kv b{ display:inline-block; min-width:180px; color:var(--mut); font-weight:600; }
+  .kv.note,.none{ color:var(--mut); font-style:italic; } .none{ text-align:center; padding:14px; }
+  footer{ color:var(--mut); font-size:11.5px; margin-top:24px; text-align:center; }
+</style></head><body><div class="wrap">
+<header>
+  <h1>ADORecon — contoso-eng<span class="ro">READ-ONLY ASSESSMENT</span></h1>
+  <div class="meta">2026-01-15T14:02:11.004Z → 2026-01-15T14:05:02.881Z · 171.9s · scope: Payments, Platform, DataPlatform · source https://dev.azure.com/contoso-eng/Payments (sample data)</div>
+</header>
+<div class="summary">
+  <div class="stat"><b>6</b><small>posture findings</small></div>
+  <div class="stat"><b>19</b><small>firm secrets</small></div>
+  <div class="stat"><b>58</b><small>secret values</small></div>
+  <div class="stat"><b>5</b><small>cloud connections</small></div>
+  <div class="stat"><b>3</b><small>projects</small></div>
+</div>
+<nav><b>Jump to:</b>
+  <a href="#posture">Posture findings</a><a href="#identity">Identity</a><a href="#reach">Cloud reachability</a>
+  <a href="#agents">Agent pools</a><a href="#ext">Extensions</a><a href="#feeds">Feeds</a>
+  <a href="#secrets">Secrets</a><a href="#inventory">Inventory</a>
+</nav>
+
+<section id="posture"><h2>Posture findings <span class="c">1C / 4H / 1M / 0L / 0I</span></h2>
+<div class="scroll"><table><thead><tr><th>sev</th><th>finding</th><th>detail</th><th>link</th></tr></thead><tbody>
+<tr class="high"><td>high</td><td>Reachable cloud connection: prod-azure-sc</td><td>Current identity can USE this Azure RM connection in a pipeline, executing against Contoso-Prod (a1b2c3d4-...) via ServicePrincipal. Session-to-cloud pivot path. Demonstrate only on sign-off.</td><td><a href="#">open</a></td></tr>
+<tr class="high"><td>high</td><td>Pipeline decorator installed: SecureScan Enforcer</td><td>Publisher contoso-devsecops. A decorator runs on every pipeline in the org, an org-wide code-exec and secret-harvest surface and a persistence primitive. Review its source and scope.</td><td><a href="#">open</a></td></tr>
+<tr class="high"><td>high</td><td>Plaintext credential in Library variable: GitHub Access / GitHubToken</td><td>Variable "GitHubToken" in variable group "GitHub Access" (project Platform) holds a credential in plaintext. It is not marked secret, so its value is readable by anyone with pipeline/library read access and returned in cleartext by the REST API. Mark it secret, or link from a Key Vault.</td><td><a href="#">open</a></td></tr>
+<tr class="high"><td>high</td><td>Repo write in Platform</td><td>Current identity can push to repositories in this project (build-script and template poisoning surface). Read-only tool flags reachability only.</td><td><a href="#">open</a></td></tr>
+<tr class="critical"><td>critical</td><td>Private key in Payments repo</td><td>PEM private-key block present in an appsettings file. Rotate and restrict.</td><td><a href="#">open</a></td></tr>
+<tr class="medium"><td>medium</td><td>Self-hosted pool: build-linux-prod</td><td>Queuing against this pool is code execution on internal host(s): BLD-AGENT-07, BLD-AGENT-08. Lateral-movement surface. Read-only tool enumerates; it does not queue.</td><td><a href="#">open</a></td></tr>
+</tbody></table></div></section>
+
+<section id="identity"><h2>Identity &amp; privilege</h2>
+<div class="kv"><b>Authenticated identity</b> svc-ado-deploy@contoso.com</div>
+<div class="kv"><b>Org users / groups</b> 214 / 37</div>
+<div class="kv"><b>Admin groups</b> Endpoint Administrators</div>
+<div class="kv"><b>Service identities</b> 11</div>
+</section>
+
+<section id="reach"><h2>Cloud reachability <span class="c">5</span></h2>
+<p class="kv note">"use" = current identity can run a pipeline that uses the connection (evaluated via the permissions API). "?" means the check could not be evaluated and needs manual confirmation.</p>
+<div class="scroll"><table><thead><tr><th>provider</th><th>connection</th><th>target</th><th>scheme</th><th>can use</th><th>can admin</th><th>link</th></tr></thead><tbody>
+<tr><td>Azure RM</td><td>prod-azure-sc</td><td>Contoso-Prod (a1b2c3d4-...)</td><td>ServicePrincipal</td><td><b>YES</b></td><td></td><td><a href="#">open</a></td></tr>
+<tr><td>Azure RM</td><td>staging-azure-sc</td><td>Contoso-Staging (55aa...)</td><td>WorkloadIdentityFederation</td><td><b>YES</b></td><td>YES</td><td><a href="#">open</a></td></tr>
+<tr><td>AWS</td><td>aws-ecr-push</td><td>AccessKeyId AKIA... </td><td>UsernamePassword</td><td>?</td><td></td><td><a href="#">open</a></td></tr>
+<tr><td>Kubernetes</td><td>aks-staging</td><td>https://aks-stg.hcp.eastus.azmk8s.io</td><td>Token</td><td>no</td><td></td><td><a href="#">open</a></td></tr>
+<tr><td>Container registry</td><td>acr-shared</td><td>contoso.azurecr.io</td><td>ServicePrincipal</td><td><b>YES</b></td><td></td><td><a href="#">open</a></td></tr>
+</tbody></table></div></section>
+
+<section id="agents"><h2>Agent pools <span class="c">6</span></h2>
+<div class="scroll"><table><thead><tr><th>pool</th><th>type</th><th>agents (host / OS)</th><th>link</th></tr></thead><tbody>
+<tr><td>Azure Pipelines</td><td>MS-hosted</td><td></td><td><a href="#">open</a></td></tr>
+<tr><td>build-linux-prod</td><td>self-hosted</td><td>BLD-AGENT-07 (Linux), BLD-AGENT-08 (Linux)</td><td><a href="#">open</a></td></tr>
+<tr><td>release-win</td><td>self-hosted</td><td>REL-WIN-02 (Windows_NT)</td><td><a href="#">open</a></td></tr>
+</tbody></table></div></section>
+
+<section id="ext"><h2>Extensions &amp; decorators <span class="c">23</span></h2>
+<div class="scroll"><table><thead><tr><th>extension</th><th>publisher</th><th>flag</th><th>link</th></tr></thead><tbody>
+<tr class="high"><td>SecureScan Enforcer</td><td>contoso-devsecops</td><td><b>decorator</b></td><td><a href="#">open</a></td></tr>
+<tr><td>SonarQube</td><td>SonarSource</td><td></td><td><a href="#">open</a></td></tr>
+<tr><td>Replace Tokens</td><td>qetza</td><td></td><td><a href="#">open</a></td></tr>
+</tbody></table></div></section>
+
+<section id="feeds"><h2>Artifact feeds <span class="c">3</span></h2>
+<div class="scroll"><table><thead><tr><th>feed</th><th>note</th><th>link</th></tr></thead><tbody>
+<tr><td>contoso-internal</td><td>upstream enabled</td><td><a href="#">open</a></td></tr>
+<tr><td>mobile-packages</td><td></td><td><a href="#">open</a></td></tr>
+<tr><td>shared-nuget</td><td>upstream enabled</td><td><a href="#">open</a></td></tr>
+</tbody></table></div></section>
+
+<section id="secrets"><h2>Secrets — 19 firm (1C / 12H / 4M / 2L)</h2>
+<p class="kv note">Firm = fixed-format token, low false-positive. Heuristic = entropy/format guess, review-required. Values shown in full for the assessment (sample data below is not real).</p>
+<div class="scroll"><table><thead><tr><th>sev</th><th>conf</th><th>rule</th><th>value</th><th>location(s)</th></tr></thead><tbody>
+<tr class="critical"><td>critical</td><td>firm</td><td>private-key</td><td><code>-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBg...(sample)...Qk9EWQ==\n-----END PRIVATE KEY-----</code></td><td><a href="#">repo:Payments/api/certs/tls.pem</a></td></tr>
+<tr class="high"><td>high</td><td>firm</td><td>github-pat</td><td><code>github_pat_11ABCDEFA0sampletokenNOTREAL0123456789abcdefABCDEFghijklmn</code></td><td><a href="#">varGroup:Platform/GitHub Access [GitHubToken]</a></td></tr>
+<tr class="high"><td>high</td><td>firm</td><td>aws-akid</td><td><code>AKIAIOSFODNN7EXAMPLE</code></td><td><a href="#">varGroup:Payments/prod-secrets [AwsKeyId]</a></td></tr>
+<tr class="high"><td>high</td><td>firm</td><td>azure-storage</td><td><code>AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==</code></td><td><a href="#">repo:Platform/etl/appsettings.json</a></td></tr>
+<tr class="high"><td>high</td><td>firm</td><td>slack</td><td><code>xoxb-1111111111-2222222222-SAMPLEtokenNotReal01</code></td><td><a href="#">serviceConn:Platform/notify-hook</a></td></tr>
+<tr class="high"><td>high</td><td>firm</td><td>db-conn</td><td><code>Server=sql-prod.contoso.net;Database=payments;User Id=svc_pay;Password=Xq9$mP2vLz8w!Aa2</code></td><td><a href="#">wiki:Payments/Home/runbook</a><br><a href="#">repo:Payments/api/web.config</a><br><i>(×2 total)</i></td></tr>
+<tr class="high"><td>high</td><td>heuristic</td><td>aws-secret</td><td><code>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</code></td><td><a href="#">repo:Payments/infra/dev.tfvars</a></td></tr>
+<tr class="high"><td>high</td><td>heuristic</td><td>ado-pat</td><td><code>7k2m4q9xz8w3n5r1t6y2u8i4o0p6a2s8d4f0g6h2j8k4l0q6</code></td><td><a href="#">buildLog:Platform/build-8841/log-6</a></td></tr>
+<tr class="medium"><td>medium</td><td>firm</td><td>jwt</td><td><code>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYW1wbGUifQ.4t3sample_signature_not_real_abcd</code></td><td><a href="#">wiki:Platform/API/auth-notes</a></td></tr>
+<tr class="medium"><td>medium</td><td>heuristic</td><td>high-entropy</td><td><code>ryMK8CUVyge6iWsQCT+t1KXueyZ3Ze4DEAvRBWBq</code></td><td><a href="#">repo:Platform/svc/config.json</a></td></tr>
+<tr class="low"><td>low</td><td>heuristic</td><td>assign</td><td><code>P@ssw0rd-Staging-2026</code></td><td><a href="#">repo:Payments/web/.env.staging</a><br><a href="#">repo:Payments/web/.env.dev</a></td></tr>
+</tbody></table></div></section>
+
+<section id="inventory"><h2>Inventory (scan coverage)</h2>
+<h3 style="font-size:13px;margin:6px 0">Variable groups</h3>
+<div class="scroll"><table><thead><tr><th>project</th><th>name</th><th>secret vars</th><th>plaintext vars</th><th>link</th></tr></thead><tbody>
+<tr><td>Payments</td><td>prod-secrets</td><td>4</td><td>3</td><td><a href="#">open</a></td></tr>
+<tr><td>Platform</td><td>GitHub Access</td><td>0</td><td>2</td><td><a href="#">open</a></td></tr>
+</tbody></table></div>
+<h3 style="font-size:13px;margin:14px 0 6px">Pipelines</h3>
+<div class="scroll"><table><thead><tr><th>project</th><th>name</th><th>type</th><th>link</th></tr></thead><tbody>
+<tr><td>Payments</td><td>payments-ci</td><td>yaml</td><td><a href="#">open</a></td></tr>
+<tr><td>Platform</td><td>platform-release</td><td>classic</td><td><a href="#">open</a></td></tr>
+</tbody></table></div>
+<h3 style="font-size:13px;margin:14px 0 6px">Repositories</h3>
+<div class="scroll"><table><thead><tr><th>project</th><th>repo</th><th>files</th><th>scanned</th><th>link</th></tr></thead><tbody>
+<tr><td>Payments</td><td>api</td><td>842</td><td>63</td><td><a href="#">open</a></td></tr>
+<tr><td>Platform</td><td>etl</td><td>1204</td><td>96</td><td><a href="#">open</a></td></tr>
+</tbody></table></div>
+</section>
+
+<footer>Generated by ADORecon (read-only). Sample report with fictional data for documentation. All findings link to the live resource in the Azure DevOps portal.</footer>
+</div></body></html>
