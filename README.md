@@ -26,12 +26,6 @@ Findings render in a draggable, resizable in-page panel and export to JSON or a 
 | --- | --- |
 | ![recon](docs/ui-recon.png) | ![log](docs/ui-log.png) |
 
-The exported HTML report:
-
-![report](docs/report.png)
-
-> Reproduce these screens with sample data by opening `ui-mockups.html` in a browser, and `sample-report.html` for the exported report.
-
 ## Why session-based and read-only
 
 Most Azure DevOps tooling asks for a Personal Access Token. ADORecon does not. It works from a foothold an operator already has: a browser signed into the target org. That means:
